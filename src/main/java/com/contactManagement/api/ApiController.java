@@ -3,6 +3,9 @@ package com.contactManagement.api;
 import com.contactManagement.jwt.JwtUtils;
 import com.contactManagement.jwt.LoginRequest;
 import com.contactManagement.jwt.LoginResponse;
+import com.contactManagement.model.Contact;
+import com.contactManagement.payload.ContactDTO;
+import com.contactManagement.payload.ContactResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ApiController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtUtils jwtUtils;
+    @Autowired
+    private ApiService apiService;
 
     @PostMapping("/SignInToken")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
@@ -54,5 +57,29 @@ public class ApiController {
                 .collect(Collectors.toList());
         LoginResponse response = new LoginResponse(jwtToken,userDetails.getUsername(),roles);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/contacts")
+    public ResponseEntity<ContactDTO> addContact(@RequestBody Contact contact){
+        ContactDTO addContact = apiService.addContact(contact);
+        return new ResponseEntity<>(addContact,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/contacts")
+    public ResponseEntity<ContactResponse> getContacts(){
+        ContactResponse contactList = apiService.getContacts();
+        return new ResponseEntity<>(contactList,HttpStatus.FOUND);
+    }
+
+    @DeleteMapping("/{contactId}")
+    public ResponseEntity<ContactDTO> deleteContact(@PathVariable Long contactId){
+        ContactDTO deletedContact = apiService.deleteContact(contactId);
+        return new ResponseEntity<>(deletedContact,HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/contacts/public/info")
+    public ResponseEntity<ContactResponse> publicInfo(){
+        ContactResponse contactList = apiService.getContacts();
+        return new ResponseEntity<>(contactList,HttpStatus.FOUND);
     }
 }
