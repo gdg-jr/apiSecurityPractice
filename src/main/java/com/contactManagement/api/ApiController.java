@@ -6,9 +6,11 @@ import com.contactManagement.jwt.LoginResponse;
 import com.contactManagement.model.Contact;
 import com.contactManagement.payload.ContactDTO;
 import com.contactManagement.payload.ContactResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -59,18 +61,20 @@ public class ApiController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN)")
     @PostMapping("/contacts")
-    public ResponseEntity<ContactDTO> addContact(@RequestBody Contact contact){
+    public ResponseEntity<ContactDTO> addContact(@Valid @RequestBody Contact contact){
         ContactDTO addContact = apiService.addContact(contact);
         return new ResponseEntity<>(addContact,HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('USER','ADMIN)")
     @GetMapping("/contacts")
     public ResponseEntity<ContactResponse> getContacts(){
         ContactResponse contactList = apiService.getContacts();
         return new ResponseEntity<>(contactList,HttpStatus.FOUND);
     }
 
+    @PreAuthorize("hasRole('ADMIN)")
     @DeleteMapping("/{contactId}")
     public ResponseEntity<ContactDTO> deleteContact(@PathVariable Long contactId){
         ContactDTO deletedContact = apiService.deleteContact(contactId);

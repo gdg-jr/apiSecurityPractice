@@ -74,12 +74,12 @@ public class ApiSecurityConfig {
         return args -> {
             JdbcUserDetailsManager manager = (JdbcUserDetailsManager) userDetailsService;
             UserDetails user1 = User.withUsername("admin")
-                    .password(encoder().encode("admin123"))
+                        .password(encoder().encode("admin123"))
                     .roles("ADMIN")
                     .build();
-            UserDetails admin = User.withUsername("user")
+                UserDetails admin = User.withUsername("user")
                     //.password(encoder().encode("adminPass"))
-                    .password(encoder().encode("user123"))
+                        .password(encoder().encode("user123"))
                     .roles("USER")
                     .build();
 

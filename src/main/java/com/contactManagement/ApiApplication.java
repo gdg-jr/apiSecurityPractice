@@ -1,9 +1,9 @@
-package com.contactManagement.api;
+package com.contactManagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.contactManagement.api", "com.contactManagement.jwt"})
+@SpringBootApplication
 public class ApiApplication {
 
 	public static void main(String[] args) {
