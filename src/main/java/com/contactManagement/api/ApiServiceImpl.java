@@ -32,9 +32,16 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public ContactResponse getContacts() {
         List<Contact> allPresent = contactRepository.findAll();
-        if(allPresent.isEmpty())
+        if (allPresent.isEmpty())
             throw new RuntimeException("The list is blank");
-      return (ContactResponse) allPresent;
+
+        List<ContactDTO> contactDTOs = allPresent.stream()
+                .map(contact -> modelMapper.map(contact, ContactDTO.class))
+                .toList();
+
+        ContactResponse contactResponse = new ContactResponse();
+        contactResponse.setContactContent(contactDTOs);
+        return contactResponse;
     }
 
     @Override

@@ -61,20 +61,20 @@ public class ApiController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("hasRole('ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/contacts")
     public ResponseEntity<ContactDTO> addContact(@Valid @RequestBody Contact contact){
         ContactDTO addContact = apiService.addContact(contact);
         return new ResponseEntity<>(addContact,HttpStatus.CREATED);
     }
-    @PreAuthorize("hasRole('USER','ADMIN)")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/contacts")
     public ResponseEntity<ContactResponse> getContacts(){
         ContactResponse contactList = apiService.getContacts();
         return new ResponseEntity<>(contactList,HttpStatus.FOUND);
     }
 
-    @PreAuthorize("hasRole('ADMIN)")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{contactId}")
     public ResponseEntity<ContactDTO> deleteContact(@PathVariable Long contactId){
         ContactDTO deletedContact = apiService.deleteContact(contactId);

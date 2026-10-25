@@ -43,7 +43,8 @@ public class ApiSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         ///this is to remove the authentication for the h2 database login poge
-        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
+        http.authorizeHttpRequests
+                (authorizeRequests -> authorizeRequests.requestMatchers("/h2-console/**","/contacts/public/info").permitAll()
                 .requestMatchers("/SignInToken").permitAll()
                 .anyRequest().authenticated());
         ///Form-based login (the /login page). Uncomment to enable it again, for testing.

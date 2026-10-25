@@ -20,5 +20,5 @@ public class Contact {
     private Long contactId;
     @NotBlank (message ="Contact Name cannot be Blank!")
     private String contactName;
-    private Integer contactNumber;
+    private Long contactNumber;
 }

@@ -11,6 +11,6 @@ public class ContactDTO {
 
     private Long contactId;
     private String contactName;
-    private Integer contactNumber;
+    private Long contactNumber;
 }
 
